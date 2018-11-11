@@ -20,11 +20,19 @@ public:
 		TArray<UMaterialInterface*> Materials;
 
 	UPROPERTY(EditAnywhere, Category = "Pyramid")
-		TSubclassOf<APyramidElement> Element;
+		TSubclassOf<APyramidElement> ElementBP;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere)
+	TArray<APyramidElement*> Elements;
+
+	UPROPERTY(EditAnywhere, Category = "Pyramid")
+	uint8 NumberOfRows;
+
+	UPROPERTY()
+		uint8 ElementsAmount;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
