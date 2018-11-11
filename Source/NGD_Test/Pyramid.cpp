@@ -29,7 +29,7 @@ void APyramid::BeginPlay()
 {
 	Super::BeginPlay();
 	APyramidElement* NewElement = GetWorld()->SpawnActor<APyramidElement>(ElementBP); //Find a way to avoid the spawn in order to get Distance
-	FVector Distance = NewElement->GetComponentsBoundingBox().GetExtent() * 2.f;
+	FVector Distance = NewElement->GetComponentsBoundingBox().GetExtent() * 2.05f;
 	NewElement->Destroy();
 	FVector RootLocation = GetActorLocation();
 
@@ -38,7 +38,7 @@ void APyramid::BeginPlay()
 		uint8 ColumnsInRow = 1 + (2 * ((i + 1) / 2));
 		for (uint8 j = 0; j < ColumnsInRow; j++)
 		{
-			FVector Position(j - ColumnsInRow* 0.5f, 0.f, (NumberOfRows - i));
+			FVector Position(0.f, j - ColumnsInRow * 0.5f, (NumberOfRows - i));
 			Position *= Distance;
 			Position += RootLocation;
 			APyramidElement* NewElement = GetWorld()->SpawnActor<APyramidElement>(ElementBP, Position, GetActorRotation());

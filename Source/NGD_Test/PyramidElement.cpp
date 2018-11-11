@@ -3,6 +3,7 @@
 #include "PyramidElement.h"
 #include <Classes/Components/StaticMeshComponent.h>
 #include <Classes/Materials/Material.h>
+#include "Engine/World.h"
 
 // Sets default values
 APyramidElement::APyramidElement()
@@ -25,7 +26,6 @@ void APyramidElement::BeginPlay()
 void APyramidElement::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void APyramidElement::SetMaterial(UMaterialInterface* material)
