@@ -22,9 +22,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-/*
+
 	UFUNCTION(BlueprintCallable)
-	void SetMaterial(UMaterialInterface material);*/
+	void SetMaterial(UMaterialInterface* material);
 
 private:
 

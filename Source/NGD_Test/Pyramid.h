@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "PyramidElement.h"
 #include "Pyramid.generated.h"
 
 UCLASS()
@@ -17,6 +18,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Pyramid")
 		TArray<UMaterialInterface*> Materials;
+
+	UPROPERTY(EditAnywhere, Category = "Pyramid")
+		TSubclassOf<APyramidElement> Element;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

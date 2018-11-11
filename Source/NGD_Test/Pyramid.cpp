@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Pyramid.h"
-
+#include "Engine/World.h"
 
 // Sets default values
 APyramid::APyramid()
@@ -15,7 +15,9 @@ APyramid::APyramid()
 void APyramid::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	APyramidElement* NewElement = GetWorld()->SpawnActor<APyramidElement>(Element, GetActorLocation(), GetActorRotation());
+	NewElement->SetMaterial(Materials[0]);
 }
 
 // Called every frame

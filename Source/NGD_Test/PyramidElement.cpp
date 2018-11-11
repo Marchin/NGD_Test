@@ -27,9 +27,9 @@ void APyramidElement::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-//
-//void APyramidElement::SetMaterial(UMaterialInterface material)
-//{
-//	ElementMesh->SetMaterial(0, &material);
-//}
+
+void APyramidElement::SetMaterial(UMaterialInterface* material)
+{
+	ElementMesh->SetMaterial(0, material);
+}
 
