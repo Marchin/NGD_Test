@@ -3,6 +3,7 @@
 #include "NGD_TestProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "PyramidElement.h"
 
 ANGD_TestProjectile::ANGD_TestProjectile() 
 {
@@ -36,8 +37,11 @@ void ANGD_TestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-
+		APyramidElement *const PyramidElement = Cast<APyramidElement>(OtherActor);
+		if (PyramidElement)
+		{
+			PyramidElement->Destroy();
+		}
 		Destroy();
 	}
 }

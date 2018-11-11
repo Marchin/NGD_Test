@@ -19,16 +19,24 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void Destroyed() override;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	void SetMaterial(UMaterialInterface* material);
+		UMaterialInterface* GetMaterial();
+
+	UFUNCTION(BlueprintCallable)
+		void SetMaterial(UMaterialInterface* material);
 
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
-	class UStaticMeshComponent* ElementMesh;
+		class UStaticMeshComponent* ElementMesh;
 	
+
+	UFUNCTION()
+		void CheckSidesForCombo(FVector Direction);
 };

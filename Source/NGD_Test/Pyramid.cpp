@@ -39,6 +39,7 @@ void APyramid::BeginPlay()
 		for (uint8 j = 0; j < ColumnsInRow; j++)
 		{
 			FVector Position(0.f, j - ColumnsInRow * 0.5f, (NumberOfRows - i));
+			
 			Position *= Distance;
 			Position += RootLocation;
 			APyramidElement* NewElement = GetWorld()->SpawnActor<APyramidElement>(ElementBP, Position, GetActorRotation());
