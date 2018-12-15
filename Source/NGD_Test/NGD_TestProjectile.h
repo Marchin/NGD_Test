@@ -30,5 +30,13 @@ public:
 	FORCEINLINE class USphereComponent* GetCollisionComp() const { return CollisionComp; }
 	/** Returns ProjectileMovement subobject **/
 	FORCEINLINE class UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
+
+
+	UFUNCTION()
+	void SetShooter(class ANGD_TestCharacter* PlayerID);
+private:
+
+	UPROPERTY(VisibleAnywhere)
+	class ANGD_TestCharacter* Shooter;
 };
 

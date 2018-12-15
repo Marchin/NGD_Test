@@ -11,6 +11,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+#include "NGD_TestGameMode.h"
+#include "Blueprint/UserWidget.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -80,6 +82,7 @@ ANGD_TestCharacter::ANGD_TestCharacter()
 	VR_MuzzleLocation->SetRelativeLocation(FVector(0.000004, 53.999992, 10.000000));
 	VR_MuzzleLocation->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));		// Counteract the rotation of the VR gun model.
 
+
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
 }
@@ -102,6 +105,21 @@ void ANGD_TestCharacter::BeginPlay()
 	{
 		VR_Gun->SetHiddenInGame(true, true);
 		Mesh1P->SetHiddenInGame(false, true);
+	}
+
+	ANGD_TestGameMode* GameMode = GetWorld()->GetAuthGameMode<ANGD_TestGameMode>();
+	if (GameMode)
+	{
+		GameMode->Register(this);
+	}
+
+	if (HUDWidgetClass != nullptr)
+	{
+		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HUDWidgetClass);
+		if (CurrentWidget != nullptr)
+		{
+			CurrentWidget->AddToViewport();
+		}
 	}
 }
 
@@ -146,11 +164,13 @@ void ANGD_TestCharacter::OnFire()
 		UWorld* const World = GetWorld();
 		if (World != NULL)
 		{
+			ANGD_TestProjectile* Projectile;
 			if (bUsingMotionControllers)
 			{
 				const FRotator SpawnRotation = VR_MuzzleLocation->GetComponentRotation();
 				const FVector SpawnLocation = VR_MuzzleLocation->GetComponentLocation();
-				World->SpawnActor<ANGD_TestProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+				Projectile = World->SpawnActor<ANGD_TestProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+				
 			}
 			else
 			{
@@ -163,7 +183,11 @@ void ANGD_TestCharacter::OnFire()
 				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 				// spawn the projectile at the muzzle
-				World->SpawnActor<ANGD_TestProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				Projectile = World->SpawnActor<ANGD_TestProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+			}
+			if (Projectile)
+			{
+				Projectile->SetShooter(this);
 			}
 		}
 	}

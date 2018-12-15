@@ -26,17 +26,25 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-		UMaterialInterface* GetMaterial();
+	UMaterialInterface* GetMaterial();
 
 	UFUNCTION(BlueprintCallable)
-		void SetMaterial(UMaterialInterface* material);
+	void SetMaterial(UMaterialInterface* material);
 
+	UFUNCTION(BlueprintCallable)
+	void WasHit(class ANGD_TestCharacter* Player, int32 ChainNum);
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
-		class UStaticMeshComponent* ElementMesh;
+	class UStaticMeshComponent* ElementMesh;
 	
 
 	UFUNCTION()
-		void CheckSidesForCombo(FVector Direction);
+	void CheckSidesForCombo(FVector Direction);
+
+	UPROPERTY()
+	ANGD_TestCharacter* WhoHitIt;
+
+	UPROPERTY()
+	int32 ChainNumber;
 };

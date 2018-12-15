@@ -40,8 +40,13 @@ void ANGD_TestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 		APyramidElement *const PyramidElement = Cast<APyramidElement>(OtherActor);
 		if (PyramidElement)
 		{
-			PyramidElement->Destroy();
+			PyramidElement->WasHit(Shooter, 1);
 		}
 		Destroy();
 	}
+}
+
+void ANGD_TestProjectile::SetShooter(ANGD_TestCharacter* Player)
+{
+	Shooter = Player;
 }

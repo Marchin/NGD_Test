@@ -4,6 +4,9 @@
 #include "NGD_TestHUD.h"
 #include "NGD_TestCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Kismet/GameplayStatics.h"
+#include "NGD_TestCharacter.h"
+#include "Engine/World.h"
 
 ANGD_TestGameMode::ANGD_TestGameMode()
 	: Super()
@@ -14,4 +17,19 @@ ANGD_TestGameMode::ANGD_TestGameMode()
 
 	// use our custom HUD class
 	HUDClass = ANGD_TestHUD::StaticClass();
+}
+
+void ANGD_TestGameMode::Register(ANGD_TestCharacter* Player)
+{
+	PlayerScores.Add(Player, 0);
+}
+
+int32 ANGD_TestGameMode::GetScore(ANGD_TestCharacter* Player) 
+{
+	return PlayerScores[Player];
+}
+
+void ANGD_TestGameMode::AddScore(ANGD_TestCharacter* Player, int32 Points)
+{
+	PlayerScores[Player] += Points;
 }

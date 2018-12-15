@@ -132,6 +132,12 @@ protected:
 	 */
 	bool EnableTouchscreenMovement(UInputComponent* InputComponent);
 
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "NGD_Test")
+		TSubclassOf<class UUserWidget> HUDWidgetClass;
+	UPROPERTY()
+		class UUserWidget* CurrentWidget;
+
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }

@@ -4,7 +4,8 @@
 #include <Classes/Components/StaticMeshComponent.h>
 #include <Classes/Materials/Material.h>
 #include "Engine/World.h"
-#include "Runtime/Core/Public/Delegates/DelegateSignatureImpl.inl"
+#include "NGD_TestGameMode.h"
+#include "CustomMath.h"
 
 // Sets default values
 APyramidElement::APyramidElement()
@@ -25,18 +26,27 @@ void APyramidElement::BeginPlay()
 
 void APyramidElement::Destroyed()
 {
-	CheckSidesForCombo(GetActorUpVector());
-	CheckSidesForCombo(-GetActorUpVector());
-	CheckSidesForCombo(GetActorRightVector());
-	CheckSidesForCombo(-GetActorRightVector());
+	if (WhoHitIt != nullptr)
+	{
+		float points = CustomMath::Fibonacci(ChainNumber);
+		ANGD_TestGameMode* GameMode = Cast<ANGD_TestGameMode>(GetWorld()->GetAuthGameMode());
+		int a = 0;
+		if (GameMode)
+		{
+			a++;
+			GameMode->AddScore(WhoHitIt, points);
+		}
+		CheckSidesForCombo(GetActorUpVector());
+		CheckSidesForCombo(-GetActorUpVector());
+		CheckSidesForCombo(GetActorRightVector());
+		CheckSidesForCombo(-GetActorRightVector());
+	}
 }
 
 // Called every frame
 void APyramidElement::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	FActorHitSignature a;
-
 }
 
 UMaterialInterface * APyramidElement::GetMaterial()
@@ -49,6 +59,16 @@ void APyramidElement::SetMaterial(UMaterialInterface* material)
 	ElementMesh->SetMaterial(0, material);
 }
 
+void APyramidElement::WasHit(ANGD_TestCharacter* PlayerID, int32 ChainNum)
+{
+	if (WhoHitIt == nullptr)
+	{
+		WhoHitIt = PlayerID;
+		ChainNumber = ChainNum;
+		Destroy();
+	}
+}
+
 void APyramidElement::CheckSidesForCombo(FVector Direction)
 {
 	FHitResult Hit;
@@ -57,7 +77,7 @@ void APyramidElement::CheckSidesForCombo(FVector Direction)
 	APyramidElement *const PyramidElement = Cast<APyramidElement>(Hit.Actor);
 	if (PyramidElement && PyramidElement->GetMaterial() == GetMaterial())
 	{
-		PyramidElement->Destroy();
+		PyramidElement->WasHit(WhoHitIt, ChainNumber + 1);
 	}
 }
 
