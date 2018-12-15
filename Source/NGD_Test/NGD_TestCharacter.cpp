@@ -11,7 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
-#include "NGD_TestGameMode.h"
+#include "NGD_TestGameState.h"
 #include "Blueprint/UserWidget.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -107,12 +107,6 @@ void ANGD_TestCharacter::BeginPlay()
 		Mesh1P->SetHiddenInGame(false, true);
 	}
 
-	ANGD_TestGameMode* GameMode = GetWorld()->GetAuthGameMode<ANGD_TestGameMode>();
-	if (GameMode)
-	{
-		GameMode->Register(this);
-	}
-
 	if (HUDWidgetClass != nullptr)
 	{
 		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HUDWidgetClass);
@@ -187,7 +181,7 @@ void ANGD_TestCharacter::OnFire()
 			}
 			if (Projectile)
 			{
-				Projectile->SetShooter(this);
+				Projectile->SetShooter(PlayerState);
 			}
 		}
 	}

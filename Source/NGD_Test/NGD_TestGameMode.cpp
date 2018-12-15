@@ -19,17 +19,3 @@ ANGD_TestGameMode::ANGD_TestGameMode()
 	HUDClass = ANGD_TestHUD::StaticClass();
 }
 
-void ANGD_TestGameMode::Register(ANGD_TestCharacter* Player)
-{
-	PlayerScores.Add(Player, 0);
-}
-
-int32 ANGD_TestGameMode::GetScore(ANGD_TestCharacter* Player) 
-{
-	return PlayerScores[Player];
-}
-
-void ANGD_TestGameMode::AddScore(ANGD_TestCharacter* Player, int32 Points)
-{
-	PlayerScores[Player] += Points;
-}

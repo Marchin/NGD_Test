@@ -33,10 +33,10 @@ public:
 
 
 	UFUNCTION()
-	void SetShooter(class ANGD_TestCharacter* PlayerID);
+	void SetShooter(APlayerState* PlayerID);
 private:
 
 	UPROPERTY(VisibleAnywhere)
-	class ANGD_TestCharacter* Shooter;
+	class APlayerState* Shooter;
 };
 

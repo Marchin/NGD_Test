@@ -46,7 +46,7 @@ void ANGD_TestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 	}
 }
 
-void ANGD_TestProjectile::SetShooter(ANGD_TestCharacter* Player)
+void ANGD_TestProjectile::SetShooter(APlayerState* Player)
 {
 	Shooter = Player;
 }

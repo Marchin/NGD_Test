@@ -4,7 +4,7 @@
 #include <Classes/Components/StaticMeshComponent.h>
 #include <Classes/Materials/Material.h>
 #include "Engine/World.h"
-#include "NGD_TestGameMode.h"
+#include "NGD_Test_PS.h"
 #include "CustomMath.h"
 
 // Sets default values
@@ -28,13 +28,11 @@ void APyramidElement::Destroyed()
 {
 	if (WhoHitIt != nullptr)
 	{
-		float points = CustomMath::Fibonacci(ChainNumber);
-		ANGD_TestGameMode* GameMode = Cast<ANGD_TestGameMode>(GetWorld()->GetAuthGameMode());
-		int a = 0;
-		if (GameMode)
+		float Points = CustomMath::Fibonacci(ChainNumber);
+		ANGD_Test_PS* Player = Cast<ANGD_Test_PS>(WhoHitIt);
+		if (Player)
 		{
-			a++;
-			GameMode->AddScore(WhoHitIt, points);
+			Player->AddPoints(Points);
 		}
 		CheckSidesForCombo(GetActorUpVector());
 		CheckSidesForCombo(-GetActorUpVector());
@@ -54,12 +52,12 @@ UMaterialInterface * APyramidElement::GetMaterial()
 	return ElementMesh->GetMaterial(0);
 }
 
-void APyramidElement::SetMaterial(UMaterialInterface* material)
+void APyramidElement::SetMaterial(UMaterialInterface* Material)
 {
-	ElementMesh->SetMaterial(0, material);
+	ElementMesh->SetMaterial(0, Material);
 }
 
-void APyramidElement::WasHit(ANGD_TestCharacter* PlayerID, int32 ChainNum)
+void APyramidElement::WasHit(APlayerState* PlayerID, int32 ChainNum)
 {
 	if (WhoHitIt == nullptr)
 	{
