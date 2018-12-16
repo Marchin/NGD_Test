@@ -18,10 +18,15 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Score")
 	int32 GetScore() const;
 
-	UFUNCTION(BlueprintCallable, Category = "Score")
+	UFUNCTION(Reliable, Server, WithValidation)
 	void AddPoints(int32 Points);
+	void AddPoints_Implementation(int32 Points);
+	bool AddPoints_Validate(int32 Points);
+
+protected:
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
 
 private:
-	UPROPERTY()
+	UPROPERTY(replicated)
 	int32 NGD_Score;
 };

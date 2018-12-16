@@ -37,7 +37,7 @@ public:
 	UFUNCTION()
 	void UpdateMesh();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void WasHit(APlayerState* Player, int32 ChainNum);
 private:
 	UPROPERTY(ReplicatedUsing = UpdateMesh)

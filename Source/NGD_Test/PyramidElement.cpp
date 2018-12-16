@@ -97,7 +97,6 @@ void APyramidElement::CheckSidesForCombo(FVector Direction)
 void APyramidElement::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	//DOREPLIFETIME(APyramidElement, ElementMesh);
 	DOREPLIFETIME(APyramidElement, ElementMaterial);
 }
 
