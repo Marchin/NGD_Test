@@ -131,6 +131,7 @@ void ANGD_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ANGD_TestCharacter::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ANGD_TestCharacter::OnFire_Local);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
@@ -150,7 +151,7 @@ void ANGD_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ANGD_TestCharacter::LookUpAtRate);
 }
 
-void ANGD_TestCharacter::OnFire()
+void ANGD_TestCharacter::OnFire_Implementation()
 {
 	// try and fire a projectile
 	if (ProjectileClass != NULL)
@@ -186,6 +187,15 @@ void ANGD_TestCharacter::OnFire()
 		}
 	}
 
+}
+
+bool ANGD_TestCharacter::OnFire_Validate()
+{
+	return true;
+}
+
+void ANGD_TestCharacter::OnFire_Local()
+{
 	// try and play the sound if specified
 	if (FireSound != NULL)
 	{

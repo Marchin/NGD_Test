@@ -83,7 +83,13 @@ public:
 protected:
 	
 	/** Fires a projectile. */
+	UFUNCTION(Reliable, Server, WithValidation)
 	void OnFire();
+	void OnFire_Implementation();
+	bool OnFire_Validate();
+
+	UFUNCTION()
+	void OnFire_Local();
 
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();
