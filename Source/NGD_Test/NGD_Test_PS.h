@@ -16,7 +16,7 @@ class NGD_TEST_API ANGD_Test_PS : public APlayerState
 
 public:
 	UFUNCTION(BlueprintPure, Category = "Score")
-	int32 GetScore();
+	int32 GetScore() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Score")
 	void AddPoints(int32 Points);

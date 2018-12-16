@@ -2,7 +2,7 @@
 
 #include "NGD_Test_PS.h"
 
-int32 ANGD_Test_PS::GetScore()
+int32 ANGD_Test_PS::GetScore() const
 {
 	return NGD_Score;
 }

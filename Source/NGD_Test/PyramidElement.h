@@ -19,25 +19,32 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
 
 	virtual void Destroyed() override;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable)
-	UMaterialInterface* GetMaterial();
+	UFUNCTION(BlueprintPure)
+	UMaterialInterface* GetMaterial() const;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(Reliable, Server, WithValidation)
 	void SetMaterial(UMaterialInterface* Material);
+	void SetMaterial_Implementation(UMaterialInterface* Material);
+	bool SetMaterial_Validate(UMaterialInterface* Material);
+
+	UFUNCTION()
+	void UpdateMesh();
 
 	UFUNCTION(BlueprintCallable)
 	void WasHit(APlayerState* Player, int32 ChainNum);
 private:
+	UPROPERTY(ReplicatedUsing = UpdateMesh)
+	UMaterialInterface* ElementMaterial;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, ReplicatedUsing = UpdateMesh, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* ElementMesh;
-	
 
 	UFUNCTION()
 	void CheckSidesForCombo(FVector Direction);

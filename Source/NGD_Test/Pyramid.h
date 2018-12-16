@@ -16,23 +16,29 @@ public:
 	// Sets default values for this actor's properties
 	APyramid();
 
-	UPROPERTY(EditAnywhere, Category = "Pyramid")
+	UPROPERTY(EditAnywhere, replicated, Category = "Pyramid")
 		TArray<UMaterialInterface*> Materials;
 
-	UPROPERTY(EditAnywhere, Category = "Pyramid")
+	UPROPERTY(EditAnywhere, replicated, Category = "Pyramid")
 		TSubclassOf<APyramidElement> ElementBP;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
 
-	UPROPERTY(VisibleAnywhere)
+	UFUNCTION(Reliable, Server, WithValidation)
+	void SetupPyramid();
+	void SetupPyramid_Implementation();
+	bool SetupPyramid_Validate();
+
+	UPROPERTY(replicated)
 	TArray<APyramidElement*> Elements;
 
 	UPROPERTY(EditAnywhere, Category = "Pyramid")
 	uint8 NumberOfRows;
 
 	UPROPERTY()
-		uint8 ElementsAmount;
+	uint8 ElementsAmount;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

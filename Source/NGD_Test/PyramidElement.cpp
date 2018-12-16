@@ -6,6 +6,7 @@
 #include "Engine/World.h"
 #include "NGD_Test_PS.h"
 #include "CustomMath.h"
+#include "UnrealNetwork.h"
 
 // Sets default values
 APyramidElement::APyramidElement()
@@ -13,8 +14,11 @@ APyramidElement::APyramidElement()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	ElementMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Element Mesh"));
+	ElementMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Element Mesh")); 
+	ElementMesh->SetIsReplicated(true);
 	RootComponent = ElementMesh;
+	bReplicates = true;
+	bAlwaysRelevant = true;
 }
 
 // Called when the game starts or when spawned
@@ -47,14 +51,25 @@ void APyramidElement::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-UMaterialInterface * APyramidElement::GetMaterial()
+UMaterialInterface * APyramidElement::GetMaterial() const
 {
 	return ElementMesh->GetMaterial(0);
 }
 
-void APyramidElement::SetMaterial(UMaterialInterface* Material)
+void APyramidElement::SetMaterial_Implementation(UMaterialInterface* Material)
 {
-	ElementMesh->SetMaterial(0, Material);
+	ElementMaterial = Material;
+	UpdateMesh();
+}
+
+bool APyramidElement::SetMaterial_Validate(UMaterialInterface * Material)
+{
+	return true;
+}
+
+void APyramidElement::UpdateMesh()
+{
+	ElementMesh->SetMaterial(0, ElementMaterial);
 }
 
 void APyramidElement::WasHit(APlayerState* PlayerID, int32 ChainNum)
@@ -77,6 +92,13 @@ void APyramidElement::CheckSidesForCombo(FVector Direction)
 	{
 		PyramidElement->WasHit(WhoHitIt, ChainNumber + 1);
 	}
+}
+
+void APyramidElement::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	//DOREPLIFETIME(APyramidElement, ElementMesh);
+	DOREPLIFETIME(APyramidElement, ElementMaterial);
 }
 
 
