@@ -43,7 +43,7 @@ private:
 	UPROPERTY(ReplicatedUsing = UpdateMesh)
 	UMaterialInterface* ElementMaterial;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, ReplicatedUsing = UpdateMesh, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, replicated, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* ElementMesh;
 
 	UFUNCTION()
