@@ -14,30 +14,33 @@ void ANGD_TestGameState::ElementWasDestroyed()
 	{ 
 		//INVESTIGATE: look for an overload function that does not neet a time handler
 		//Delay so clients are notified of points from the last hit
-		
-		PlayerArray.Sort([](APlayerState& StateA, APlayerState& StateB)
-			{
-				ANGD_Test_PS* NGDStateA = Cast<ANGD_Test_PS>(&StateA);
-				ANGD_Test_PS* NGDStateB = Cast<ANGD_Test_PS>(&StateB);
-				if (NGDStateA && NGDStateB)
-				{
-					return (NGDStateA->GetScore() < NGDStateB->GetScore());
-				}
-				else
-				{
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString::Printf(TEXT("Invalid State")));
-					return false;
-				}
-			});
 		GetWorldTimerManager().SetTimer(GameOverTimer, this, &ANGD_TestGameState::EndMatch, .5f, false);
 	}
 }
 
-void ANGD_TestGameState::EndMatch()
+void ANGD_TestGameState::EndMatch_Implementation()
 {
+	PlayerArray.Sort([](APlayerState& StateA, APlayerState& StateB)
+		{
+			ANGD_Test_PS* NGDStateA = Cast<ANGD_Test_PS>(&StateA);
+			ANGD_Test_PS* NGDStateB = Cast<ANGD_Test_PS>(&StateB);
+			if (NGDStateA && NGDStateB)
+			{
+				return (NGDStateA->GetScore() > NGDStateB->GetScore());
+			}
+			else
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Invalid State")));
+				return false;
+			}
+		});
 	GameOver.Broadcast();
 }
 
+bool ANGD_TestGameState::EndMatch_Validate()
+{
+	return true;
+}
 void ANGD_TestGameState::BeginPlay()
 {
 	Super::BeginPlay();
@@ -46,9 +49,9 @@ void ANGD_TestGameState::BeginPlay()
 		TotalElements += iPyramid->GetElementsAmount();
 	}
 }
-
-void ANGD_TestGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(ANGD_TestGameState, GameOver);
-}
+//
+//void ANGD_TestGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+//{
+//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+//	DOREPLIFETIME(ANGD_TestGameState, GameOver);
+//}

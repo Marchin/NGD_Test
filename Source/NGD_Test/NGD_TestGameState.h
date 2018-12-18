@@ -19,13 +19,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Pyramid")
 	void ElementWasDestroyed();
 
-	UPROPERTY(BlueprintAssignable, replicated, Category = "Pyramid")
+	UPROPERTY(BlueprintAssignable, /*replicated,*/ Category = "Pyramid")
 	FGameOver GameOver;
 protected:
-	UFUNCTION()
+	UFUNCTION(Reliable, NetMulticast, WithValidation)
 	void EndMatch();
+	void EndMatch_Implementation();
+	bool EndMatch_Validate();
 	virtual void BeginPlay() override;
-	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
+	//virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
 
 	UPROPERTY()
 	FTimerHandle GameOverTimer;
