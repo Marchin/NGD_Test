@@ -3,26 +3,46 @@
 #include "NGD_TestGameState.h"
 #include "EngineUtils.h"
 #include "Pyramid.h"
+#include "NGD_Test_PS.h"
 #include "UnrealNetwork.h"
 #include "Engine.h"
 
 void ANGD_TestGameState::ElementWasDestroyed()
 {
 	TotalElements--;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString::Printf(TEXT("%d"), TotalElements));
 	if (TotalElements <= 0) 
-	{
-		GameOver.Broadcast();
+	{ 
+		//INVESTIGATE: look for an overload function that does not neet a time handler
+		//Delay so clients are notified of points from the last hit
+		
+		PlayerArray.Sort([](APlayerState& StateA, APlayerState& StateB)
+			{
+				ANGD_Test_PS* NGDStateA = Cast<ANGD_Test_PS>(&StateA);
+				ANGD_Test_PS* NGDStateB = Cast<ANGD_Test_PS>(&StateB);
+				if (NGDStateA && NGDStateB)
+				{
+					return (NGDStateA->GetScore() < NGDStateB->GetScore());
+				}
+				else
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString::Printf(TEXT("Invalid State")));
+					return false;
+				}
+			});
+		GetWorldTimerManager().SetTimer(GameOverTimer, this, &ANGD_TestGameState::EndMatch, .5f, false);
 	}
+}
+
+void ANGD_TestGameState::EndMatch()
+{
+	GameOver.Broadcast();
 }
 
 void ANGD_TestGameState::BeginPlay()
 {
 	Super::BeginPlay();
-
 	for (TActorIterator<APyramid> iPyramid(GetWorld()); iPyramid; ++iPyramid) 
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("YOHHO")));
 		TotalElements += iPyramid->GetElementsAmount();
 	}
 }

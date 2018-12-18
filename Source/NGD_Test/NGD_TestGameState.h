@@ -22,10 +22,15 @@ public:
 	UPROPERTY(BlueprintAssignable, replicated, Category = "Pyramid")
 	FGameOver GameOver;
 protected:
+	UFUNCTION()
+	void EndMatch();
 	virtual void BeginPlay() override;
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
-	
+
+	UPROPERTY()
+	FTimerHandle GameOverTimer;
 private:
 	UPROPERTY()
 	int32 TotalElements;
+
 };

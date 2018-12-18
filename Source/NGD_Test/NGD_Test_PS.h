@@ -21,7 +21,12 @@ public:
 	UFUNCTION(BlueprintPure, Category = "NGD")
 	int32 GetID() const;
 
-	UFUNCTION(Reliable, Server, WithValidation)
+	UFUNCTION(Reliable, NetMulticast, WithValidation)
+	void SetID(int32 ID);
+	void SetID_Implementation(int32 ID);
+	bool SetID_Validate(int32 ID);
+
+	UFUNCTION(Reliable, NetMulticast, WithValidation)
 	void AddPoints(int32 Points);
 	void AddPoints_Implementation(int32 Points);
 	bool AddPoints_Validate(int32 Points);
@@ -33,6 +38,6 @@ private:
 	UPROPERTY(replicated)
 	int32 NGD_Score;
 
-	UPROPERTY()
+	UPROPERTY(replicated)
 	int32 NGD_ID;
 };
