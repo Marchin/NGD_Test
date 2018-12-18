@@ -13,7 +13,6 @@
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 #include "NGD_TestGameState.h"
 #include "Blueprint/UserWidget.h"
-#include "NDG_TestPlayerController.h"
 #include "Engine.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -231,12 +230,18 @@ bool ANGD_TestCharacter::SuscribeDisabler_Validate()
 
 void ANGD_TestCharacter::DisableControl_Implementation()
 {
-	ANDG_TestPlayerController* Con = Cast<ANDG_TestPlayerController>(GetController());
+	APlayerController* Con = Cast<APlayerController>(GetController());
 	if (Con)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("YEAH"));
-		GLog->Log("YEEEEES");
 		DisableInput(Con);
+	}
+	if (HighScoreWidget != nullptr)
+	{
+		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HighScoreWidget);
+		if (CurrentWidget != nullptr)
+		{
+			CurrentWidget->AddToViewport();
+		}
 	}
 }
 
