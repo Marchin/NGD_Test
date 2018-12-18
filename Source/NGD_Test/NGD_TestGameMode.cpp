@@ -7,7 +7,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "NGD_TestCharacter.h"
 #include "Engine/World.h"
-
 ANGD_TestGameMode::ANGD_TestGameMode()
 	: Super()
 {

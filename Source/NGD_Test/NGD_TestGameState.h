@@ -9,29 +9,23 @@
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameOver);
 UCLASS()
 class NGD_TEST_API ANGD_TestGameState : public AGameStateBase
 {
 	GENERATED_BODY()
-	
+
 public:
+	UFUNCTION(BlueprintCallable, Category = "Pyramid")
+	void ElementWasDestroyed();
 
-	//UFUNCTION()
-	//void Register(class ANGD_TestCharacter* Player);
-
-	//UFUNCTION()
-	//void AddScore(class ANGD_TestCharacter* Player, int32 Points);
-
-
-	//UFUNCTION(BlueprintPure, Category = "NGD_Test")
-	//int32 GetScore(class ANGD_TestCharacter* Player);
-
+	UPROPERTY(BlueprintAssignable, replicated, Category = "Pyramid")
+	FGameOver GameOver;
 protected:
-
-
+	virtual void BeginPlay() override;
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
+	
 private:
 	UPROPERTY()
-	TMap<class ANGD_TestCharacter*, int32> PlayerScores;
-	
-	
+	int32 TotalElements;
 };

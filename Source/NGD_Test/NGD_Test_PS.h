@@ -15,8 +15,11 @@ class NGD_TEST_API ANGD_Test_PS : public APlayerState
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintPure, Category = "Score")
+	UFUNCTION(BlueprintPure, Category = "NGD")
 	int32 GetScore() const;
+
+	UFUNCTION(BlueprintPure, Category = "NGD")
+	int32 GetID() const;
 
 	UFUNCTION(Reliable, Server, WithValidation)
 	void AddPoints(int32 Points);
@@ -25,8 +28,11 @@ public:
 
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
-
+	virtual void BeginPlay() override;
 private:
 	UPROPERTY(replicated)
 	int32 NGD_Score;
+
+	UPROPERTY()
+	int32 NGD_ID;
 };

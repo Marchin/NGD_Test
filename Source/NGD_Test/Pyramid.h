@@ -16,6 +16,9 @@ public:
 	// Sets default values for this actor's properties
 	APyramid();
 
+	UFUNCTION(BlueprintPure)
+	int32 GetElementsAmount();
+
 	UPROPERTY(EditAnywhere, replicated, Category = "Pyramid")
 		TArray<UMaterialInterface*> Materials;
 
@@ -35,10 +38,10 @@ protected:
 	TArray<APyramidElement*> Elements;
 
 	UPROPERTY(EditAnywhere, Category = "Pyramid")
-	uint8 NumberOfRows;
+	int32 NumberOfRows;
 
 	UPROPERTY()
-	uint8 ElementsAmount;
+	int32 ElementsAmount;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

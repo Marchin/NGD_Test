@@ -91,6 +91,19 @@ protected:
 	UFUNCTION()
 	void OnFire_Local();
 
+	UFUNCTION(Reliable, Client, WithValidation)
+	void SuscribeDisabler();
+	void SuscribeDisabler_Implementation();
+	bool SuscribeDisabler_Validate();
+
+	UFUNCTION(Reliable, Client, WithValidation)
+	void DisableControl();
+	void DisableControl_Implementation();
+	bool DisableControl_Validate();
+
+	UFUNCTION()
+	void LocalDisable();
+
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();
 
@@ -140,7 +153,9 @@ protected:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "NGD_Test")
-		TSubclassOf<class UUserWidget> HUDWidgetClass;
+		TSubclassOf<class UUserWidget> ScoreWidget;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "NGD_Test")
+		TSubclassOf<class UUserWidget> HighScoreWidget;
 	UPROPERTY()
 		class UUserWidget* CurrentWidget;
 

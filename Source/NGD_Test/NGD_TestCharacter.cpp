@@ -13,6 +13,8 @@
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 #include "NGD_TestGameState.h"
 #include "Blueprint/UserWidget.h"
+#include "NDG_TestPlayerController.h"
+#include "Engine.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -82,7 +84,6 @@ ANGD_TestCharacter::ANGD_TestCharacter()
 	VR_MuzzleLocation->SetRelativeLocation(FVector(0.000004, 53.999992, 10.000000));
 	VR_MuzzleLocation->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));		// Counteract the rotation of the VR gun model.
 
-
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
 }
@@ -107,13 +108,18 @@ void ANGD_TestCharacter::BeginPlay()
 		Mesh1P->SetHiddenInGame(false, true);
 	}
 
-	if (HUDWidgetClass != nullptr)
+	if (ScoreWidget != nullptr)
 	{
-		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HUDWidgetClass);
+		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), ScoreWidget);
 		if (CurrentWidget != nullptr)
 		{
 			CurrentWidget->AddToViewport();
 		}
+	}
+	ANGD_TestGameState* GameState = GetWorld()->GetGameState<ANGD_TestGameState>();
+	if (GameState)
+	{
+		GameState->GameOver.AddDynamic(this, &ANGD_TestCharacter::LocalDisable);
 	}
 }
 
@@ -212,6 +218,36 @@ void ANGD_TestCharacter::OnFire_Local()
 			AnimInstance->Montage_Play(FireAnimation, 1.f);
 		}
 	}
+}
+
+void ANGD_TestCharacter::SuscribeDisabler_Implementation()
+{
+}
+
+bool ANGD_TestCharacter::SuscribeDisabler_Validate()
+{
+	return true;
+}
+
+void ANGD_TestCharacter::DisableControl_Implementation()
+{
+	ANDG_TestPlayerController* Con = Cast<ANDG_TestPlayerController>(GetController());
+	if (Con)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("YEAH"));
+		GLog->Log("YEEEEES");
+		DisableInput(Con);
+	}
+}
+
+bool ANGD_TestCharacter::DisableControl_Validate()
+{
+	return true;
+}
+
+void ANGD_TestCharacter::LocalDisable()
+{
+	DisableControl();
 }
 
 void ANGD_TestCharacter::OnResetVR()

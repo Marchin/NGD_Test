@@ -41,6 +41,7 @@ ANGD_TestProjectile::ANGD_TestProjectile()
 void ANGD_TestProjectile::OnHit_Implementation(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	// Only add impulse and destroy projectile if we hit a physics
+
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
 	{
 		APyramidElement *const PyramidElement = Cast<APyramidElement>(OtherActor);
@@ -65,5 +66,6 @@ void ANGD_TestProjectile::SetShooter(APlayerState* Player)
 void ANGD_TestProjectile::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(ANGD_TestProjectile, CollisionComp);
+	DOREPLIFETIME(ANGD_TestProjectile, CollisionComp); 
+		DOREPLIFETIME(ANGD_TestProjectile, ProjectileMovement);
 }

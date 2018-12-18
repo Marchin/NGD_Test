@@ -7,6 +7,7 @@
 #include "NGD_Test_PS.h"
 #include "CustomMath.h"
 #include "UnrealNetwork.h"
+#include "NGD_TestGameState.h"
 
 // Sets default values
 APyramidElement::APyramidElement()
@@ -42,6 +43,11 @@ void APyramidElement::Destroyed()
 		CheckSidesForCombo(-GetActorUpVector());
 		CheckSidesForCombo(GetActorRightVector());
 		CheckSidesForCombo(-GetActorRightVector());
+		ANGD_TestGameState* GameState = Cast<ANGD_TestGameState>(GetWorld()->GetGameState());
+		if (GameState)
+		{
+			GameState->ElementWasDestroyed();
+		}
 	}
 }
 

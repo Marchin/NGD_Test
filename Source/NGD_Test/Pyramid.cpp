@@ -3,6 +3,7 @@
 #include "Pyramid.h"
 #include "Engine/World.h"
 #include "UnrealNetwork.h"
+#include "Engine.h"
 
 //       _
 //     _|_|_
@@ -19,15 +20,11 @@ APyramid::APyramid()
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
 	bAlwaysRelevant = true;
-	if (Role == ROLE_Authority)
-	{
-		ElementsAmount = 0;
-		for (uint8 i = 0; i < NumberOfRows; i++)
-		{
-			ElementsAmount += 1 + (2 * ((i + 1) / 2));
-		}
-		Elements.Reserve(ElementsAmount);
-	}
+}
+
+int32 APyramid::GetElementsAmount()
+{
+	return ElementsAmount;
 }
 
 // Called when the game starts or when spawned
@@ -49,12 +46,18 @@ void APyramid::SetupPyramid_Implementation()
 {
 	if (Role == ROLE_Authority)
 	{
+		ElementsAmount = 0;
+		for (int32 i = 0; i < NumberOfRows; i++)
+		{
+			ElementsAmount += 1 + (2 * ((i + 1) / 2));
+		}
+		Elements.Reserve(ElementsAmount);
 		APyramidElement* NewElement = GetWorld()->SpawnActor<APyramidElement>(ElementBP); //Find a way to avoid the spawn in order to get Distance
 		FVector Distance = NewElement->GetComponentsBoundingBox().GetExtent() * 2.05f;
 		NewElement->Destroy();
 		FVector RootLocation = GetActorLocation();
 
-		for (uint8 i = 0; i < NumberOfRows; i++)
+		for (int32 i = 0; i < NumberOfRows; i++)
 		{
 			uint8 ColumnsInRow = 1 + (2 * ((i + 1) / 2));
 			for (uint8 j = 0; j < ColumnsInRow; j++)

@@ -3,9 +3,23 @@
 #include "NGD_Test_PS.h"
 #include "UnrealNetwork.h"
 
+
+void ANGD_Test_PS::BeginPlay()
+{
+	Super::BeginPlay();
+
+	static int32 ID = 0;
+	NGD_ID = ID++;
+}
+
 int32 ANGD_Test_PS::GetScore() const
 {
 	return NGD_Score;
+}
+
+int32 ANGD_Test_PS::GetID() const
+{
+	return NGD_ID;
 }
 
 void ANGD_Test_PS::AddPoints_Implementation(int32 Points)
