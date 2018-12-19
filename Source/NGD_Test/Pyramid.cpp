@@ -62,7 +62,7 @@ void APyramid::SetupPyramid()
 			uint8 ColumnsInRow = 1 + (2 * ((i + 1) / 2));
 			for (uint8 j = 0; j < ColumnsInRow; j++)
 			{
-				FVector Position(GetActorForwardVector());
+				FVector Position(GetActorRightVector());
 
 				Position *= (j - ColumnsInRow * 0.5f);
 				Position.Z = (NumberOfRows - i);
