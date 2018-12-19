@@ -16,7 +16,6 @@ public:
 
 protected:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
-	int32 IDCount;
 };
 
 

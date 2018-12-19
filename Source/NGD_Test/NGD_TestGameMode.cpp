@@ -24,6 +24,6 @@ void ANGD_TestGameMode::PostLogin(APlayerController* NewPlayer)
 	ANGD_Test_PS* State = Cast<ANGD_Test_PS>(NewPlayer->PlayerState);
 	if (State)
 	{
-		State->MulticastSetID(IDCount++);
+		State->MulticastSetID(GetNumPlayers());
 	}
 }
