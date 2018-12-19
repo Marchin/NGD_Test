@@ -20,19 +20,19 @@ public:
 	int32 GetElementsAmount();
 
 	UPROPERTY(EditAnywhere, replicated, Category = "Pyramid")
-		TArray<UMaterialInterface*> Materials;
+	TArray<UMaterialInterface*> Materials;
 
 	UPROPERTY(EditAnywhere, replicated, Category = "Pyramid")
-		TSubclassOf<APyramidElement> ElementBP;
+	TSubclassOf<APyramidElement> ElementBP;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
 
-	UFUNCTION(Reliable, Server, WithValidation)
+	UFUNCTION(/*Reliable, Client, WithValidation*/)
 	void SetupPyramid();
-	void SetupPyramid_Implementation();
-	bool SetupPyramid_Validate();
+	/*void ClientSetupPyramid_Implementation();
+	bool ClientSetupPyramid_Validate();*/
 
 	UPROPERTY(replicated)
 	TArray<APyramidElement*> Elements;

@@ -135,7 +135,6 @@ void ANGD_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ANGD_TestCharacter::OnFire);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ANGD_TestCharacter::OnFire_Local);
 
 	// Enable touchscreen input
@@ -156,7 +155,7 @@ void ANGD_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ANGD_TestCharacter::LookUpAtRate);
 }
 
-void ANGD_TestCharacter::OnFire_Implementation()
+void ANGD_TestCharacter::OnFire_Implementation(APlayerState* Shooter)
 {
 	// try and fire a projectile
 	if (ProjectileClass != NULL)
@@ -187,20 +186,21 @@ void ANGD_TestCharacter::OnFire_Implementation()
 			}
 			if (Projectile)
 			{
-				Projectile->SetShooter(PlayerState);
+				Projectile->SetShooter(Shooter);
 			}
 		}
 	}
 
 }
 
-bool ANGD_TestCharacter::OnFire_Validate()
+bool ANGD_TestCharacter::OnFire_Validate(APlayerState* Shooter)
 {
 	return true;
 }
 
 void ANGD_TestCharacter::OnFire_Local()
 {
+	OnFire(PlayerState);
 	// try and play the sound if specified
 	if (FireSound != NULL)
 	{
@@ -268,7 +268,7 @@ void ANGD_TestCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const F
 	}
 	if ((FingerIndex == TouchItem.FingerIndex) && (TouchItem.bMoved == false))
 	{
-		OnFire();
+		OnFire_Local();
 	}
 	TouchItem.bIsPressed = true;
 	TouchItem.FingerIndex = FingerIndex;

@@ -42,7 +42,7 @@ void APyramid::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifet
 	DOREPLIFETIME(APyramid, ElementBP);
 }
 
-void APyramid::SetupPyramid_Implementation()
+void APyramid::SetupPyramid()
 {
 	if (Role == ROLE_Authority)
 	{
@@ -73,11 +73,11 @@ void APyramid::SetupPyramid_Implementation()
 		}
 	}
 }
-
-bool APyramid::SetupPyramid_Validate()
-{
-	return true;
-}
+//
+//bool APyramid::SetupPyramid_Validate()
+//{
+//	return true;
+//}
 
 // Called every frame
 void APyramid::Tick(float DeltaTime)

@@ -84,9 +84,9 @@ protected:
 	
 	/** Fires a projectile. */
 	UFUNCTION(Reliable, Server, WithValidation)
-	void OnFire();
-	void OnFire_Implementation();
-	bool OnFire_Validate();
+	void OnFire(APlayerState* Shooter);
+	void OnFire_Implementation(APlayerState* Shooter);
+	bool OnFire_Validate(APlayerState* Shooter);
 
 	UFUNCTION()
 	void OnFire_Local();

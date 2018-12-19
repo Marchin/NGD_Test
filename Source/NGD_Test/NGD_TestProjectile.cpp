@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "PyramidElement.h"
 #include "UnrealNetwork.h"
+#include "Engine.h"
 
 
 ANGD_TestProjectile::ANGD_TestProjectile()
@@ -13,8 +14,11 @@ ANGD_TestProjectile::ANGD_TestProjectile()
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->InitSphereRadius(5.0f);
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
-	CollisionComp->OnComponentHit.AddDynamic(this, &ANGD_TestProjectile::OnHit);		// set up a notification for when this component hits something blocking
-
+	
+	if (GetOwner())
+	{
+		CollisionComp->OnComponentHit.AddDynamic(this, &ANGD_TestProjectile::OnHit);		// set up a notification for when this component hits something blocking
+	}
 	// Players can't walk on it
 	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
 	CollisionComp->CanCharacterStepUpOn = ECB_No;
@@ -32,16 +36,17 @@ ANGD_TestProjectile::ANGD_TestProjectile()
 
 	bReplicates = true;
 	bAlwaysRelevant = true;
-	CollisionComp->SetIsReplicated(true);
 
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("BUM")));
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
 }
 
-void ANGD_TestProjectile::OnHit_Implementation(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void ANGD_TestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	// Only add impulse and destroy projectile if we hit a physics
 
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("HIT")));
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
 	{
 		APyramidElement *const PyramidElement = Cast<APyramidElement>(OtherActor);
@@ -53,10 +58,6 @@ void ANGD_TestProjectile::OnHit_Implementation(UPrimitiveComponent* HitComp, AAc
 	}
 }
 
-bool ANGD_TestProjectile::OnHit_Validate(UPrimitiveComponent * HitComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, FVector NormalImpulse, const FHitResult & Hit)
-{
-	return true;
-}
 
 void ANGD_TestProjectile::SetShooter(APlayerState* Player)
 {
@@ -65,7 +66,6 @@ void ANGD_TestProjectile::SetShooter(APlayerState* Player)
 
 void ANGD_TestProjectile::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(ANGD_TestProjectile, CollisionComp); 
-		DOREPLIFETIME(ANGD_TestProjectile, ProjectileMovement);
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);; 
+	DOREPLIFETIME(ANGD_TestProjectile, ProjectileMovement);
 }
