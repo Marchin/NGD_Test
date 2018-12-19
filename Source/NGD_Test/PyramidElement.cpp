@@ -8,6 +8,7 @@
 #include "CustomMath.h"
 #include "UnrealNetwork.h"
 #include "NGD_TestGameState.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APyramidElement::APyramidElement()
@@ -81,6 +82,11 @@ void APyramidElement::WasHit(APlayerState* PlayerID, int32 ChainNum)
 		ChainNumber = ChainNum;
 		Destroy();
 	}
+	if (ChainNum == 1 && DestructionSound != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, DestructionSound, GetActorLocation());
+	}
+
 }
 
 void APyramidElement::CheckSidesForCombo(FVector Direction)

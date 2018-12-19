@@ -26,6 +26,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	class USoundBase* DestructionSound;
+
 	UFUNCTION(BlueprintPure)
 	UMaterialInterface* GetMaterial() const;
 
