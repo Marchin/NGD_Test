@@ -20,6 +20,7 @@ APyramid::APyramid()
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
 	bAlwaysRelevant = true;
+	SetActorTickEnabled(false);
 }
 
 int32 APyramid::GetElementsAmount()
@@ -52,9 +53,7 @@ void APyramid::SetupPyramid()
 			ElementsAmount += 1 + (2 * ((i + 1) / 2));
 		}
 		Elements.Reserve(ElementsAmount);
-		APyramidElement* NewElement = GetWorld()->SpawnActor<APyramidElement>(ElementBP); //Find a way to avoid the spawn in order to get Distance
-		FVector Distance = NewElement->GetComponentsBoundingBox().GetExtent() * 2.05f;
-		NewElement->Destroy();
+		FVector Distance = ElementBP.GetDefaultObject()->GetSize();
 		FVector RootLocation = GetActorLocation();
 
 		for (int32 i = 0; i < NumberOfRows; i++)
@@ -75,11 +74,4 @@ void APyramid::SetupPyramid()
 		}
 	}
 }
-
-// Called every frame
-void APyramid::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
 

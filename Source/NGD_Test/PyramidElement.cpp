@@ -63,6 +63,12 @@ UMaterialInterface * APyramidElement::GetMaterial() const
 	return ElementMesh->GetMaterial(0);
 }
 
+FVector APyramidElement::GetSize() const
+{
+	return ElementMesh->Bounds.BoxExtent * 2.05f;	//2x because we want edge to edge instead of center to edge
+													//The extra .05 is to avoid overlapping
+}
+
 void APyramidElement::SetMaterial(UMaterialInterface* Material)
 {
 	ElementMaterial = Material;

@@ -32,6 +32,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	UMaterialInterface* GetMaterial() const;
 
+	UFUNCTION(BlueprintPure)
+	FVector GetSize() const;
+
 	UFUNCTION(BlueprintCallable)
 	void SetMaterial(UMaterialInterface* Material);
 

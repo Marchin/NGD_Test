@@ -40,8 +40,4 @@ protected:
 
 	UPROPERTY()
 	int32 ElementsAmount;
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-	
 };
