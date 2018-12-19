@@ -62,8 +62,10 @@ void APyramid::SetupPyramid()
 			uint8 ColumnsInRow = 1 + (2 * ((i + 1) / 2));
 			for (uint8 j = 0; j < ColumnsInRow; j++)
 			{
-				FVector Position(0.f, j - ColumnsInRow * 0.5f, (NumberOfRows - i));
+				FVector Position(GetActorForwardVector());
 
+				Position *= (j - ColumnsInRow * 0.5f);
+				Position.Z = (NumberOfRows - i);
 				Position *= Distance;
 				Position += RootLocation;
 				APyramidElement* NewElement = GetWorld()->SpawnActor<APyramidElement>(ElementBP, Position, GetActorRotation());

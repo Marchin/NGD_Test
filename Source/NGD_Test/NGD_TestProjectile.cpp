@@ -37,7 +37,6 @@ ANGD_TestProjectile::ANGD_TestProjectile()
 	bReplicates = true;
 	bAlwaysRelevant = true;
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("BUM")));
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
 }
@@ -45,8 +44,6 @@ ANGD_TestProjectile::ANGD_TestProjectile()
 void ANGD_TestProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	// Only add impulse and destroy projectile if we hit a physics
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("HIT")));
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
 	{
 		APyramidElement *const PyramidElement = Cast<APyramidElement>(OtherActor);

@@ -50,6 +50,7 @@ public:
 
 protected:
 	virtual void BeginPlay();
+	virtual void Tick(float DeltaTime) override;
 
 public:
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
@@ -63,6 +64,15 @@ public:
 	/** Gun muzzle's offset from the characters location */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
 	FVector GunOffset;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
+	float FireRate;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Gameplay)
+	float FireRateCounter;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Gameplay)
+	bool bCanFire;
 
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
@@ -84,22 +94,17 @@ protected:
 	
 	/** Fires a projectile. */
 	UFUNCTION(Reliable, Server, WithValidation)
-	void OnFire(APlayerState* Shooter);
-	void OnFire_Implementation(APlayerState* Shooter);
-	bool OnFire_Validate(APlayerState* Shooter);
+	void ServerOnFire(APlayerState* Shooter);
+	void ServerOnFire_Implementation(APlayerState* Shooter);
+	bool ServerOnFire_Validate(APlayerState* Shooter);
 
 	UFUNCTION()
-	void OnFire_Local();
+	void LocalOnFire();
 
 	UFUNCTION(Reliable, Client, WithValidation)
-	void SuscribeDisabler();
-	void SuscribeDisabler_Implementation();
-	bool SuscribeDisabler_Validate();
-
-	UFUNCTION(Reliable, Client, WithValidation)
-	void DisableControl();
-	void DisableControl_Implementation();
-	bool DisableControl_Validate();
+	void ClientDisableControl();
+	void ClientDisableControl_Implementation();
+	bool ClientDisableControl_Validate();
 
 	UFUNCTION()
 	void LocalDisable();
@@ -153,11 +158,11 @@ protected:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "NGD_Test")
-		TSubclassOf<class UUserWidget> ScoreWidget;
+	TSubclassOf<class UUserWidget> ScoreWidget;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "NGD_Test")
-		TSubclassOf<class UUserWidget> HighScoreWidget;
+	TSubclassOf<class UUserWidget> HighScoreWidget;
 	UPROPERTY()
-		class UUserWidget* CurrentWidget;
+	class UUserWidget* CurrentWidget;
 
 public:
 	/** Returns Mesh1P subobject **/

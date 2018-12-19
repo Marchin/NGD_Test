@@ -122,6 +122,20 @@ void ANGD_TestCharacter::BeginPlay()
 	}
 }
 
+void ANGD_TestCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (!bCanFire)
+	{
+		FireRateCounter -= DeltaTime;
+		if (FireRateCounter < 0.f)
+		{
+			bCanFire = true;
+			FireRateCounter = FireRate;
+		}
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Input
 
@@ -131,11 +145,12 @@ void ANGD_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	check(PlayerInputComponent);
 
 	// Bind jump events
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	// We are not jumping in this mode
+	//PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	//PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ANGD_TestCharacter::OnFire_Local);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ANGD_TestCharacter::LocalOnFire);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
@@ -155,7 +170,7 @@ void ANGD_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ANGD_TestCharacter::LookUpAtRate);
 }
 
-void ANGD_TestCharacter::OnFire_Implementation(APlayerState* Shooter)
+void ANGD_TestCharacter::ServerOnFire_Implementation(APlayerState* Shooter)
 {
 	// try and fire a projectile
 	if (ProjectileClass != NULL)
@@ -193,42 +208,38 @@ void ANGD_TestCharacter::OnFire_Implementation(APlayerState* Shooter)
 
 }
 
-bool ANGD_TestCharacter::OnFire_Validate(APlayerState* Shooter)
+bool ANGD_TestCharacter::ServerOnFire_Validate(APlayerState* Shooter)
 {
 	return true;
 }
 
-void ANGD_TestCharacter::OnFire_Local()
+void ANGD_TestCharacter::LocalOnFire()
 {
-	OnFire(PlayerState);
-	// try and play the sound if specified
-	if (FireSound != NULL)
+	if (bCanFire)
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-	}
-
-	// try and play a firing animation if specified
-	if (FireAnimation != NULL)
-	{
-		// Get the animation object for the arms mesh
-		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-		if (AnimInstance != NULL)
+		ServerOnFire(PlayerState);
+		bCanFire = false;
+		// try and play the sound if specified
+		if (FireSound != NULL)
 		{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
+			UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+		}
+
+		// try and play a firing animation if specified
+		if (FireAnimation != NULL)
+		{
+			// Get the animation object for the arms mesh
+			UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+			if (AnimInstance != NULL)
+			{
+				AnimInstance->Montage_Play(FireAnimation, 1.f);
+			}
 		}
 	}
 }
 
-void ANGD_TestCharacter::SuscribeDisabler_Implementation()
-{
-}
 
-bool ANGD_TestCharacter::SuscribeDisabler_Validate()
-{
-	return true;
-}
-
-void ANGD_TestCharacter::DisableControl_Implementation()
+void ANGD_TestCharacter::ClientDisableControl_Implementation()
 {
 	APlayerController* Con = Cast<APlayerController>(GetController());
 	if (Con)
@@ -245,14 +256,14 @@ void ANGD_TestCharacter::DisableControl_Implementation()
 	}
 }
 
-bool ANGD_TestCharacter::DisableControl_Validate()
+bool ANGD_TestCharacter::ClientDisableControl_Validate()
 {
 	return true;
 }
 
 void ANGD_TestCharacter::LocalDisable()
 {
-	DisableControl();
+	ClientDisableControl();
 }
 
 void ANGD_TestCharacter::OnResetVR()
@@ -268,7 +279,7 @@ void ANGD_TestCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const F
 	}
 	if ((FingerIndex == TouchItem.FingerIndex) && (TouchItem.bMoved == false))
 	{
-		OnFire_Local();
+		LocalOnFire();
 	}
 	TouchItem.bIsPressed = true;
 	TouchItem.FingerIndex = FingerIndex;
