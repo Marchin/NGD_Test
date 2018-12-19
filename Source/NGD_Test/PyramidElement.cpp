@@ -52,11 +52,6 @@ void APyramidElement::Destroyed()
 	}
 }
 
-// Called every frame
-void APyramidElement::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
 
 UMaterialInterface * APyramidElement::GetMaterial() const
 {

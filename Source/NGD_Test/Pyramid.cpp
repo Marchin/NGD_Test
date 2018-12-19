@@ -20,7 +20,6 @@ APyramid::APyramid()
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
 	bAlwaysRelevant = true;
-	SetActorTickEnabled(false);
 }
 
 int32 APyramid::GetElementsAmount()
@@ -55,7 +54,6 @@ void APyramid::SetupPyramid()
 		Elements.Reserve(ElementsAmount);
 		FVector Distance = ElementBP.GetDefaultObject()->GetSize();
 		FVector RootLocation = GetActorLocation();
-
 		for (int32 i = 0; i < NumberOfRows; i++)
 		{
 			uint8 ColumnsInRow = 1 + (2 * ((i + 1) / 2));

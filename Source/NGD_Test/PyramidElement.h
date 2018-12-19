@@ -23,8 +23,6 @@ protected:
 
 	virtual void Destroyed() override;
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class USoundBase* DestructionSound;
