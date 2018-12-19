@@ -37,7 +37,7 @@ void APyramidElement::Destroyed()
 		ANGD_Test_PS* Player = Cast<ANGD_Test_PS>(WhoHitIt);
 		if (Player)
 		{
-			Player->AddPoints(Points);
+			Player->MulticastAddPoints(Points);
 		}
 		CheckSidesForCombo(GetActorUpVector());
 		CheckSidesForCombo(-GetActorUpVector());

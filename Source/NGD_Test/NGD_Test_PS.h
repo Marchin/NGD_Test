@@ -22,14 +22,14 @@ public:
 	int32 GetID() const;
 
 	UFUNCTION(Reliable, NetMulticast, WithValidation)
-	void SetID(int32 ID);
-	void SetID_Implementation(int32 ID);
-	bool SetID_Validate(int32 ID);
+	void MulticastSetID(int32 ID);
+	void MulticastSetID_Implementation(int32 ID);
+	bool MulticastSetID_Validate(int32 ID);
 
 	UFUNCTION(Reliable, NetMulticast, WithValidation)
-	void AddPoints(int32 Points);
-	void AddPoints_Implementation(int32 Points);
-	bool AddPoints_Validate(int32 Points);
+	void MulticastAddPoints(int32 Points);
+	void MulticastAddPoints_Implementation(int32 Points);
+	bool MulticastAddPoints_Validate(int32 Points);
 
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;

@@ -23,9 +23,9 @@ public:
 	FGameOver GameOver;
 protected:
 	UFUNCTION(Reliable, NetMulticast, WithValidation)
-	void EndMatch();
-	void EndMatch_Implementation();
-	bool EndMatch_Validate();
+	void MulticastEndMatch();
+	void MulticastEndMatch_Implementation();
+	bool MulticastEndMatch_Validate();
 	virtual void BeginPlay() override;
 	//virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
 

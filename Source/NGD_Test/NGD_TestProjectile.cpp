@@ -5,7 +5,6 @@
 #include "Components/SphereComponent.h"
 #include "PyramidElement.h"
 #include "UnrealNetwork.h"
-#include "Engine.h"
 
 
 ANGD_TestProjectile::ANGD_TestProjectile()

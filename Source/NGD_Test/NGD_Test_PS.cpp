@@ -2,8 +2,6 @@
 
 #include "NGD_Test_PS.h"
 #include "UnrealNetwork.h"
-#include "Engine.h"
-
 
 void ANGD_Test_PS::BeginPlay()
 {
@@ -21,22 +19,22 @@ int32 ANGD_Test_PS::GetID() const
 	return NGD_ID;
 }
 
-void ANGD_Test_PS::SetID_Implementation(int32 ID)
+void ANGD_Test_PS::MulticastSetID_Implementation(int32 ID)
 {
 	NGD_ID = ID;
 }
 
-bool ANGD_Test_PS::SetID_Validate(int32 ID)
+bool ANGD_Test_PS::MulticastSetID_Validate(int32 ID)
 {
 	return true;
 }
 
-void ANGD_Test_PS::AddPoints_Implementation(int32 Points)
+void ANGD_Test_PS::MulticastAddPoints_Implementation(int32 Points)
 {
 	NGD_Score += Points;
 }
 
-bool ANGD_Test_PS::AddPoints_Validate(int32 Points)
+bool ANGD_Test_PS::MulticastAddPoints_Validate(int32 Points)
 {
 	return true;
 }

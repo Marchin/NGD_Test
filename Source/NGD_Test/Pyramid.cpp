@@ -75,11 +75,6 @@ void APyramid::SetupPyramid()
 		}
 	}
 }
-//
-//bool APyramid::SetupPyramid_Validate()
-//{
-//	return true;
-//}
 
 // Called every frame
 void APyramid::Tick(float DeltaTime)

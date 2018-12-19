@@ -29,10 +29,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
 
-	UFUNCTION(/*Reliable, Client, WithValidation*/)
+	UFUNCTION()
 	void SetupPyramid();
-	/*void ClientSetupPyramid_Implementation();
-	bool ClientSetupPyramid_Validate();*/
 
 	UPROPERTY(replicated)
 	TArray<APyramidElement*> Elements;
@@ -45,7 +43,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	
 	
 };

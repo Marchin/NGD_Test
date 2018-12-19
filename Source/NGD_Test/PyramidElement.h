@@ -29,6 +29,7 @@ public:
 	UFUNCTION(BlueprintPure)
 	UMaterialInterface* GetMaterial() const;
 
+	//REVISION
 	UFUNCTION(Reliable, Server, WithValidation)
 	void SetMaterial(UMaterialInterface* Material);
 	void SetMaterial_Implementation(UMaterialInterface* Material);

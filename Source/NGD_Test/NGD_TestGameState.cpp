@@ -14,11 +14,11 @@ void ANGD_TestGameState::ElementWasDestroyed()
 	{ 
 		//INVESTIGATE: look for an overload function that does not neet a time handler
 		//Delay so clients are notified of points from the last hit
-		GetWorldTimerManager().SetTimer(GameOverTimer, this, &ANGD_TestGameState::EndMatch, .5f, false);
+		GetWorldTimerManager().SetTimer(GameOverTimer, this, &ANGD_TestGameState::MulticastEndMatch, .5f, false);
 	}
 }
 
-void ANGD_TestGameState::EndMatch_Implementation()
+void ANGD_TestGameState::MulticastEndMatch_Implementation()
 {
 	PlayerArray.Sort([](APlayerState& StateA, APlayerState& StateB)
 		{
@@ -37,10 +37,11 @@ void ANGD_TestGameState::EndMatch_Implementation()
 	GameOver.Broadcast();
 }
 
-bool ANGD_TestGameState::EndMatch_Validate()
+bool ANGD_TestGameState::MulticastEndMatch_Validate()
 {
 	return true;
 }
+
 void ANGD_TestGameState::BeginPlay()
 {
 	Super::BeginPlay();
@@ -49,9 +50,3 @@ void ANGD_TestGameState::BeginPlay()
 		TotalElements += iPyramid->GetElementsAmount();
 	}
 }
-//
-//void ANGD_TestGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-//{
-//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-//	DOREPLIFETIME(ANGD_TestGameState, GameOver);
-//}

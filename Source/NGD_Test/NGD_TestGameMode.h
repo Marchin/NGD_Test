@@ -15,11 +15,6 @@ public:
 	ANGD_TestGameMode();
 
 protected:
-	virtual void InitGame(
-		const FString & MapName,
-		const FString & Options,
-		FString & ErrorMessage
-	) override;
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	int32 IDCount;
 };

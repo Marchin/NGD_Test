@@ -6,7 +6,6 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "NGD_Test_PS.h"
-#include "Engine/World.h"
 
 ANGD_TestGameMode::ANGD_TestGameMode()
 	: Super()
@@ -19,18 +18,12 @@ ANGD_TestGameMode::ANGD_TestGameMode()
 	HUDClass = ANGD_TestHUD::StaticClass();
 }
 
-void ANGD_TestGameMode::InitGame(const FString & MapName, const FString & Options, FString & ErrorMessage)
-{
-	Super::InitGame(MapName, Options, ErrorMessage);
-	IDCount = 0;
-}
-
-void ANGD_TestGameMode::PostLogin(APlayerController * NewPlayer)
+void ANGD_TestGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 	ANGD_Test_PS* State = Cast<ANGD_Test_PS>(NewPlayer->PlayerState);
 	if (State)
 	{
-		State->SetID(IDCount++);
+		State->MulticastSetID(IDCount++);
 	}
 }
