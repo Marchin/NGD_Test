@@ -12,7 +12,7 @@ void ANGD_TestGameState::ElementWasDestroyed()
 	TotalElements--;
 	if (TotalElements <= 0) 
 	{ 
-		//INVESTIGATE: look for an overload function that does not neet a time handler
+		//INVESTIGATE: look for a function that does not neet a time handler
 		//Delay so clients are notified of points from the last hit
 		GetWorldTimerManager().SetTimer(GameOverTimer, this, &ANGD_TestGameState::MulticastEndMatch, .5f, false);
 	}

@@ -16,6 +16,10 @@ public:
 
 protected:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
+	AActor* ChoosePlayerStart_Implementation(AController* Player);
+
+private:
+	TArray<AActor*> PlayerStarts;
 };
 
 
