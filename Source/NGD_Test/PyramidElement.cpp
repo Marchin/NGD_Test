@@ -62,15 +62,10 @@ UMaterialInterface * APyramidElement::GetMaterial() const
 	return ElementMesh->GetMaterial(0);
 }
 
-void APyramidElement::SetMaterial_Implementation(UMaterialInterface* Material)
+void APyramidElement::SetMaterial(UMaterialInterface* Material)
 {
 	ElementMaterial = Material;
 	UpdateMesh();
-}
-
-bool APyramidElement::SetMaterial_Validate(UMaterialInterface * Material)
-{
-	return true;
 }
 
 void APyramidElement::UpdateMesh()
