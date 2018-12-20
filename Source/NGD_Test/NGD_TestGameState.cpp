@@ -10,11 +10,11 @@
 void ANGD_TestGameState::ElementWasDestroyed()
 {
 	TotalElements--;
-	if (TotalElements <= 0) 
+	if (bGameStarted && TotalElements <= 0)
 	{ 
 		//INVESTIGATE: look for a function that does not neet a time handler
 		//Delay so clients are notified of points from the last hit
-		GetWorldTimerManager().SetTimer(GameOverTimer, this, &ANGD_TestGameState::MulticastEndMatch, .5f, false);
+		GetWorldTimerManager().SetTimer(Timer, this, &ANGD_TestGameState::MulticastEndMatch, .5f, false);
 	}
 }
 
@@ -42,11 +42,27 @@ bool ANGD_TestGameState::MulticastEndMatch_Validate()
 	return true;
 }
 
-void ANGD_TestGameState::BeginPlay()
+void ANGD_TestGameState::MulticastStartMatch_Implementation()
 {
-	Super::BeginPlay();
-	for (TActorIterator<APyramid> iPyramid(GetWorld()); iPyramid; ++iPyramid) 
+	for (TActorIterator<APyramid> iPyramid(GetWorld()); iPyramid; ++iPyramid)
+	{
+		iPyramid->SetupPyramid();
+	}
+	for (TActorIterator<APyramid> iPyramid(GetWorld()); iPyramid; ++iPyramid)
 	{
 		TotalElements += iPyramid->GetElementsAmount();
 	}
+	bGameStarted = true;
+}
+
+bool ANGD_TestGameState::MulticastStartMatch_Validate()
+{
+	return true;
+}
+
+
+void ANGD_TestGameState::BeginPlay()
+{
+	Super::BeginPlay();
+	GetWorldTimerManager().SetTimer(Timer, this, &ANGD_TestGameState::MulticastStartMatch, 1.5f, false);
 }

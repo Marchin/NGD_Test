@@ -31,7 +31,6 @@ int32 APyramid::GetElementsAmount()
 void APyramid::BeginPlay()
 {
 	Super::BeginPlay();
-	SetupPyramid();
 }
 
 void APyramid::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
@@ -44,7 +43,7 @@ void APyramid::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifet
 
 void APyramid::SetupPyramid()
 {
-	if (Role == ROLE_Authority)
+	if (!bAlreadySetup && Role == ROLE_Authority)
 	{
 		ElementsAmount = 0;
 		for (int32 i = 0; i < NumberOfRows; i++)
@@ -52,24 +51,32 @@ void APyramid::SetupPyramid()
 			ElementsAmount += 1 + (2 * ((i + 1) / 2));
 		}
 		Elements.Reserve(ElementsAmount);
-		FVector Distance = ElementBP.GetDefaultObject()->GetSize();
 		FVector RootLocation = GetActorLocation();
 		for (int32 i = 0; i < NumberOfRows; i++)
 		{
-			uint8 ColumnsInRow = 1 + (2 * ((i + 1) / 2));
+			uint8 ColumnsInRow = 1 + (2 * ((NumberOfRows - i) / 2));
 			for (uint8 j = 0; j < ColumnsInRow; j++)
 			{
 				FVector Position(GetActorRightVector());
-
-				Position *= (j - ColumnsInRow * 0.5f);
-				Position.Z = (NumberOfRows - i);
-				Position *= Distance;
-				Position += RootLocation;
-				APyramidElement* NewElement = GetWorld()->SpawnActor<APyramidElement>(ElementBP, Position, GetActorRotation());
+				APyramidElement* NewElement;
+				if (i == 0 && j == 0)
+				{
+					NewElement = GetWorld()->SpawnActor<APyramidElement>(ElementBP, RootLocation, GetActorRotation());
+					Distance = NewElement->GetComponentsBoundingBox().GetSize() * 1.025f;
+				}
+				else
+				{
+					Position *= ((j + 1)/2)*(((j+1)%2)*2 - 1);
+					Position.Z = (i);
+					Position *= Distance;
+					Position += RootLocation;
+					NewElement = GetWorld()->SpawnActor<APyramidElement>(ElementBP, Position, GetActorRotation());
+				}
 				NewElement->SetMaterial(Materials[FMath::RandRange(0, Materials.Num() - 1)]);
 				Elements.Push(NewElement);
 			}
 		}
+		bAlreadySetup = true;
 	}
 }
 

@@ -16,6 +16,9 @@ public:
 	// Sets default values for this actor's properties
 	APyramid();
 
+	UFUNCTION()
+	void SetupPyramid();
+
 	UFUNCTION(BlueprintPure)
 	int32 GetElementsAmount();
 
@@ -27,10 +30,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
-
-	UFUNCTION()
-	void SetupPyramid();
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	UPROPERTY(replicated)
 	TArray<APyramidElement*> Elements;
@@ -39,5 +39,11 @@ protected:
 	int32 NumberOfRows;
 
 	UPROPERTY()
-	int32 ElementsAmount;
+	int32 ElementsAmount; 
+	
+	UPROPERTY()
+	FVector Distance;
+
+	UPROPERTY()
+	bool bAlreadySetup;
 };

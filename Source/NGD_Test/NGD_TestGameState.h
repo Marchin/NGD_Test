@@ -26,13 +26,21 @@ protected:
 	void MulticastEndMatch();
 	void MulticastEndMatch_Implementation();
 	bool MulticastEndMatch_Validate();
+
+
+	UFUNCTION(Reliable, NetMulticast, WithValidation)
+	void MulticastStartMatch();
+	void MulticastStartMatch_Implementation();
+	bool MulticastStartMatch_Validate();
+
 	virtual void BeginPlay() override;
-	//virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
 
 	UPROPERTY()
-	FTimerHandle GameOverTimer;
+	FTimerHandle Timer;
 private:
 	UPROPERTY()
 	int32 TotalElements;
 
+	UPROPERTY()
+	bool bGameStarted;
 };
