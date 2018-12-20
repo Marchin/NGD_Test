@@ -42,27 +42,13 @@ bool ANGD_TestGameState::MulticastEndMatch_Validate()
 	return true;
 }
 
-void ANGD_TestGameState::MulticastStartMatch_Implementation()
-{
-	for (TActorIterator<APyramid> iPyramid(GetWorld()); iPyramid; ++iPyramid)
-	{
-		iPyramid->SetupPyramid();
-	}
-	for (TActorIterator<APyramid> iPyramid(GetWorld()); iPyramid; ++iPyramid)
-	{
-		TotalElements += iPyramid->GetElementsAmount();
-	}
-	bGameStarted = true;
-}
-
-bool ANGD_TestGameState::MulticastStartMatch_Validate()
-{
-	return true;
-}
-
-
 void ANGD_TestGameState::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorldTimerManager().SetTimer(Timer, this, &ANGD_TestGameState::MulticastStartMatch, 1.5f, false);
+	for (TActorIterator<APyramid> iPyramid(GetWorld()); iPyramid; ++iPyramid)
+	{
+		iPyramid->SetupPyramid();
+		TotalElements += iPyramid->GetElementsAmount();
+	}
+	bGameStarted = true;
 }

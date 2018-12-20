@@ -19,19 +19,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Pyramid")
 	void ElementWasDestroyed();
 
-	UPROPERTY(BlueprintAssignable, /*replicated,*/ Category = "Pyramid")
+	UPROPERTY(BlueprintAssignable, Category = "Pyramid")
 	FGameOver GameOver;
 protected:
 	UFUNCTION(Reliable, NetMulticast, WithValidation)
 	void MulticastEndMatch();
 	void MulticastEndMatch_Implementation();
 	bool MulticastEndMatch_Validate();
-
-
-	UFUNCTION(Reliable, NetMulticast, WithValidation)
-	void MulticastStartMatch();
-	void MulticastStartMatch_Implementation();
-	bool MulticastStartMatch_Validate();
 
 	virtual void BeginPlay() override;
 

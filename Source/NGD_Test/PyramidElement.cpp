@@ -10,12 +10,9 @@
 #include "NGD_TestGameState.h"
 #include "Kismet/GameplayStatics.h"
 
-// Sets default values
 APyramidElement::APyramidElement()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 	ElementMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Element Mesh")); 
 	ElementMesh->SetIsReplicated(true);
 	RootComponent = ElementMesh;
@@ -23,11 +20,9 @@ APyramidElement::APyramidElement()
 	bAlwaysRelevant = true;
 }
 
-// Called when the game starts or when spawned
 void APyramidElement::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void APyramidElement::Destroyed()
@@ -53,14 +48,15 @@ void APyramidElement::Destroyed()
 }
 
 
-UMaterialInterface * APyramidElement::GetMaterial() const
+UMaterialInterface* APyramidElement::GetMaterial() const
 {
 	return ElementMesh->GetMaterial(0);
 }
 
 FVector APyramidElement::GetSize() const
 {
-	return ElementMesh->Bounds.BoxExtent * 2.05f;	//2x because we want edge to edge instead of center to edge
+
+	return ElementMesh->Bounds.GetBox().GetSize() * 1.025f;	//2x because we want edge to edge instead of center to edge
 													//The extra .05 is to avoid overlapping
 }
 
@@ -68,6 +64,13 @@ void APyramidElement::SetMaterial(UMaterialInterface* Material)
 {
 	ElementMaterial = Material;
 	UpdateMesh();
+}
+
+void APyramidElement::SetMeshRotation(FRotator Rotation)
+{
+	ElementMesh->SetConstraintMode(EDOFMode::None);
+	ElementMesh->SetWorldRotation(Rotation);
+	ElementMesh->SetConstraintMode(EDOFMode::Default);
 }
 
 void APyramidElement::UpdateMesh()

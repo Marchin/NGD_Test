@@ -36,6 +36,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetMaterial(UMaterialInterface* Material);
 
+	UFUNCTION(BlueprintCallable)
+	void SetMeshRotation(FRotator Rotation);
+
 	UFUNCTION()
 	void UpdateMesh();
 

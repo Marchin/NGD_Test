@@ -13,7 +13,6 @@ class NGD_TEST_API APyramid : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	APyramid();
 
 	UFUNCTION()
@@ -28,7 +27,6 @@ public:
 	UPROPERTY(EditAnywhere, replicated, Category = "Pyramid")
 	TSubclassOf<APyramidElement> ElementBP;
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
